@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Campfire Archiver</title>
+  <style>
+body {
+  background: #ddd;
+  font-family: 'Helvetica', arial, sans-serif;
+  line-height: 130%;
+}
+
+#home {
+  text-align: center;
+  font-size: 30px;
+  position: relative;
+  width: 620px;
+  transition: opacity 200ms linear;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  margin-left: -310px;
+}
+
+#home.hidden {
+  opacity: 0;
+}
+
+label {
+  display: block;
+  margin-top: 30px;
+  margin-bottom: 5px;
+  color: #777;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+input {
+  font-size: 30px;
+  width: 600px;
+  padding: 10px;
+}
+
+input[name=sd]{
+  padding-right: 256px;
+  width: 354px;
+  text-align: right;
+  position: relative;
+}
+
+.teeny {
+  display: block;
+  color: #aaa;
+  font-size: 13px;
+}
+
+.cfn {
+  position: absolute;
+  left: 366px;
+  z-index: 2;
+  line-height: 30px;
+  margin-top: 18px;
+  color: #aaa;
+  pointer-events: none;
+}
+
+#progress {
+  text-align: center;
+  width: 620px;
+  transition: opacity 200ms linear;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  margin-left: -310px;
+}
+
+#progress.hidden {
+  opacity: 0;
+}
+
+.progress {
+  position: relative;
+  margin: 30px 0;
+  text-align: center;
+}
+
+.progress h3 {
+  font-size: 30px;
+  margin: 0;
+  color: #777;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+  margin-bottom: 15px;
+}
+
+.progress .pbar {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  background: #bbb;
+}
+
+.progress .pbar div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+}
+
+.progress.done {
+  opacity: 0.5;
+}
+
+#done {
+  text-align: center;
+  font-size: 30px;
+  position: relative;
+  width: 620px;
+  transition: opacity 200ms linear;
+  position: fixed;
+  top: 100px;
+  left: 50%;
+  margin-left: -310px;
+  z-index: 5;
+  display: none;
+}
+
+#done.visible {
+  display: block;
+}
+
+#done h2 {
+  color: #444;
+}
+
+#done a {
+  display: block;
+  font-size: 40px;
+  margin: 100px;
+  color: #777;
+  text-decoration: none;
+}
+
+#done a:hover {
+  color: #999;
+}
+
+#done #clean {
+  font-size: 20px;
+  cursor: pointer;
+  margin-top: 100px;
+}
+
+  </style>
+</head>
+<body>
+
+<div id="home">
+  <form action="">
+    <label for="sd">Subdomain</label>
+    <span class="cfn">.campfirenow.com</span>
+    <input type="text" name="sd" />
+    <label for="tok">Token</label><input type="text" name="tok" />
+    <input type="submit" style="position:absolute;top:-1000px" />
+    <span class="teeny">This is your "API authentication token", which you can find on your "My info" page</span>
+  </form>
+</div>
+
+<div id="progress"></div>
+
+<div id="done">
+  <h2>Archive Complete!</h2>
+  <a id="view">Browse</a>
+  <a id="dl">Download</a>
+  <a id="clean" title="Delete all traces of your archive. Be careful with this.">Clean Up</a>
+</div>
+
+<script>
+
+function xhr(url, cb, fail){
+  var x = new XMLHttpRequest();
+  x.open('GET', url, true);
+  x.onload = function(){
+    cb(JSON.parse(x.responseText));
+  };
+  if(fail) x.onerror = fail;
+  x.send();
+}
+
+document
+  .querySelector('form')
+  .addEventListener('submit', function(event){
+    event.preventDefault();
+
+    var sd = document.querySelector('[name=sd]').value;
+    var tok = document.querySelector('[name=tok]').value;
+
+    xhr('/go/' + sd + '/' + tok, function(j){
+      if(j.state == 'new' || j.state == 'alreadyRunning'){
+        showProgress(sd, tok);
+      }else{
+        // ohno
+      }
+    });
+  }, false);
+
+function showProgress(sd, tok){
+  location.hash = sd + ':' + tok;
+  document.getElementById('home').className = 'hidden';
+  document.getElementById('progress').className = 'visible';
+  progressInterval = setInterval(function(){
+    fetchProgress(sd, tok);
+  }, 100);
+  document.getElementById('dl').href = '/download/' + sd + '/' + tok;
+  document.getElementById('view').href = '/archive/' + sd + '/' + tok;
+  document.getElementById('clean').addEventListener('click', function(){
+    if(!confirm('Are you sure? If you continue then you\'ll have to start from scratch if you want your archive again.')) return;
+    xhr('/cleanup/' + sd + '/' + tok, function(){ window.location.href = '/'; });
+  });
+}
+
+var fails = 0;
+
+function fetchProgress(sd, tok){
+  xhr('/progress/' + sd + '/' + tok, function(p){
+    if(p.done){
+      clearInterval(progressInterval);
+      document.getElementById('progress').className = 'hidden';
+      document.getElementById('done').className = 'visible';
+    }else{
+      p.forEach(prog);
+    }
+  }, function(){
+    if(fails++ > 10) clearInterval(progressInterval);
+  });
+}
+
+function prog(progress, idx){
+  var el = document.getElementById('progress_' + idx);
+  if(!el){
+    el = document.createElement('div');
+    el.className = 'progress';
+    el.id = 'progress_' + idx;
+    document.getElementById('progress').appendChild(el);
+
+    el.innerHTML = '<h3></h3><div class="pbar"><div></div></div>';
+  }
+  el.querySelector('h3').innerHTML = progress.title;
+  if(progress.done) el.className = 'progress done';
+  if(progress.progress && !progress.done){
+    el.querySelector('.pbar div').style.width = (progress.progress[1] / progress.progress[0] * 100) + '%';
+  }else{
+    el.querySelector('.pbar').style.display = 'none';
+  }
+}
+
+if(window.location.hash){
+  var h = location.hash.replace(/^#/, '').split(':');
+  var sd = h[0], tok = h[1];
+  xhr('/go/' + sd + '/' + tok, function(j){
+    if(j.state == 'new' || j.state == 'alreadyRunning'){
+      showProgress(sd, tok);
+    }else{
+      // ohno
+    }
+  });
+}
+
+</script>
+</body>
+</html>

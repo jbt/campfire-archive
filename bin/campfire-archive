@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+require('../lib/server');
+
+console.log('http://localhost:%s/', process.env.PORT || 3000)

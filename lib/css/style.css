@@ -1,0 +1,286 @@
+body {
+  background: #ddd;
+  font-family: 'Helvetica', arial, sans-serif;
+  line-height: 130%;
+}
+
+#messages {
+  width: 800px;
+  margin: 20px auto;
+  margin-top: 100px;
+}
+
+.message-group {
+  position: relative;
+  padding-left: 65px;
+  margin: 10px 5px;
+  min-height: 50px;
+}
+
+.message-group .msgs {
+  position: relative;
+  background: white;
+  background: -webkit-linear-gradient(top, #fbfbfb, #f4f4f4);
+  border: 1px solid #999;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  border-radius: 7px;
+}
+
+.message-group .msgs:before {
+  position: absolute;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-right: 9px solid #999;
+  left: -9px;
+  top: 5px;
+  content: '';
+}
+.message-group .msgs:after {
+  position: absolute;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid #f9f9f9;
+  left: -8px;
+  top: 6px;
+  content: '';
+}
+
+.message-group .user {
+  left: 0;
+  position: absolute;
+  width: 50px;
+  text-align: right;
+}
+
+.message-group .user img {
+  border-radius: 7px;
+  border: 1px solid #888;
+  width: 45px;
+  height: 45px;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.message-group .msgs > div {
+  padding: 4px 8px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.message-group .text span,
+.message-group .paste pre,
+.message-group .upload {
+  word-wrap: break-word;
+}
+
+.message-group .text img,
+.message-group .upload img {
+  max-width: 707px;
+  max-height: 350px;
+}
+
+.message-group .msgs .name {
+  font-weight: bold;
+  color: #666;
+  font-size: 0.8em;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+
+.message-group .msgs > div:first-child {
+  border-radius: 5px 5px 0 0;
+}
+
+.message-group .msgs > div:last-child {
+  border-bottom: none;
+}
+
+.paste pre {
+  white-space: pre-wrap;
+  margin: 0;
+}
+
+.timestamp {
+  padding-left: 80px;
+  color: #999;
+  font-size: 0.8em;
+}
+
+.enter, .leave {
+  margin: 10px 0;
+  padding-left: 80px;
+  color: #666;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.5);
+}
+
+.head {
+  background: #fff;
+  position: fixed;
+  text-align: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  z-index: 3;
+  line-height: 40px;
+}
+
+.head div {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.head a {
+  float: left;
+  font-size: 25px;
+  font-weight: bold;
+  color: #444;
+  text-decoration: none;
+}
+
+.head span {
+  float: right;
+  margin-left: 30px;
+  font-size: 20px;
+}
+
+.nav {
+  background: #eee;
+  position: fixed;
+  text-align: center;
+  top: 40px;
+  left: 0;
+  right: 0;
+  height: 30px;
+  z-index: 2;
+  line-height: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.nav a {
+  display: inline-block;
+  color: #666;
+  width: 300px;
+  text-decoration: none;
+}
+
+.no-activity {
+  height: 300px;
+  line-height: 300px;
+  font-size: 24px;
+  color: #bbb;
+  text-align: center;
+}
+
+
+.message-group .msgs > .tweet {
+  min-height: 50px;
+  padding-left: 60px;
+}
+
+.tweet img {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  left: 10px;
+}
+
+.tweet span {
+  display: block;
+}
+
+.tweet .author {
+  font-size: 0.8em;
+}
+
+.emoji {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-image: url(emoji-16.png);
+}
+
+.upload .deleted {
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #444;
+  margin-left: 4px;
+}
+
+h1, h2, .year {
+  text-align: center;
+}
+
+h1 {
+  font-size: 3em;
+  margin-top: 80px;
+  color: #444;
+}
+
+h1 a {
+  color: #444;
+  text-decoration: none;
+}
+
+.years {
+  position: relative;
+  background: white;
+  background: -webkit-linear-gradient(top, #fbfbfb, #f4f4f4);
+  border: 1px solid #999;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  border-radius: 7px;
+  margin: 0 auto;
+  width: 840px;
+}
+
+
+.year {
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+
+.year:first-child {
+  border-radius: 5px 5px 0 0;
+}
+
+.year:last-child {
+  border-bottom: none;
+}
+
+.head .other-rooms {
+  position: absolute;
+  top: 40px;
+  margin-left: -10px;
+  background: white;
+  z-index: 3;
+  text-align: left;
+  width: auto;
+  border-radius: 0 0 7px 7px;
+  display: none;
+}
+
+.head a:hover + .other-rooms,
+.other-rooms:hover {
+  display: block;
+}
+
+.other-rooms a {
+  display: block;
+  padding: 0 30px 0 10px;
+  float: none;
+}
+
+.other-rooms a:last-child {
+  border-radius: 0 0 7px 7px;
+}
+
+.other-rooms a:hover {
+  background: #f7f7f7;
+}
+
+.other-rooms a.unavailable {
+  color: #aaa;
+  pointer-events: none;
+}

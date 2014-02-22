@@ -1,0 +1,25 @@
+{
+  "name": "campfire-archive",
+  "version": "0.0.1",
+  "description": "Campfire Archiver",
+  "main": "lib/CampfireArchiver.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jbt/campfire-archive.git"
+  },
+  "author": "JT <jt@gosquared.com>",
+  "license": "MIT",
+  "dependencies": {
+    "async": "~0.2.10",
+    "request": "~2.33.0",
+    "express": "~3.4.8",
+    "mkdirp": "~0.3.5",
+    "ejs": "~0.8.5",
+    "moment": "~2.5.1",
+    "archiver": "~0.6.1"
+  },
+  "bin": {
+    "campfire-archive": "bin/campfire-archive"
+  },
+  "prefer-global": true
+}
