@@ -13,7 +13,7 @@ Data is downloaded and processed in a directory called `campfire` inside your cu
 
 # Update
 
-Added a new 'User-Agent' field to the user interface.
-
-This avoids the following issue:
+Added a new 'User-Agent' field to the user interface in order to avoid this issue:
+```
 https://github.com/jbt/campfire-archive/issues/1
+```
