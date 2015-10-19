@@ -10,3 +10,10 @@ $ campfire-archive
 Then go to [localhost:3000](http://localhost:3000/), enter your details, and you're away!
 
 Data is downloaded and processed in a directory called `campfire` inside your current directory, so make sure you run it from a directory with enough space!
+
+# Update
+
+Added a new 'User-Agent' field to the user interface in order to avoid this issue:
+```
+https://github.com/jbt/campfire-archive/issues/1
+```
